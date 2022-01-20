@@ -64,7 +64,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == 'login':
             response = login_user(post_body)
-        if resource == 'customer':
+        if resource == 'register':
             response = create_user(post_body)
 
         self.wfile.write(response.encode())

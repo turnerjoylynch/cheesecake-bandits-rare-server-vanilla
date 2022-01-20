@@ -1,6 +1,6 @@
 import sqlite3
 import json
-
+from datetime import datetime
 
 def login_user(user):
     """Checks for the user in the database
@@ -18,7 +18,7 @@ def login_user(user):
 
         db_cursor.execute("""
             select id, username
-            from User
+            from Users
             where username = ?
             and password = ?
         """, (user['username'], user['password']))
@@ -52,17 +52,20 @@ def create_user(user):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        Insert into Customer (first_name, last_name, username, email, password) values (?, ?, ?, ?, ?)
+        Insert into Users (first_name, last_name, username, email, password, bio, created_on, active) values (?, ?, ?, ?, ?, ?, ?, 1)
         """, (
             user['first_name'],
             user['last_name'],
             user['username'],
             user['email'],
-            user['password']
+            user['password'],
+            user['bio'],
+            datetime.now()
         ))
 
         id = db_cursor.lastrowid
 
         return json.dumps({
-            'token': id
+            'token': id,
+            'valid': True
         })
