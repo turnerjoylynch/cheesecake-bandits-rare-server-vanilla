@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
+from views.post_requests import post, update_post, delete_post, get_all_posts
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -65,12 +66,25 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == 'post':
+            response = post(post_body)
 
         self.wfile.write(response.encode())
 
     def do_PUT(self):
-        """Handles PUT requests to the server"""
-        pass
+        """Handles PUT requests to the server
+        """
+        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+        
+        # Delete a single post from the list
+        if resource == "posts":
+            update_post(id, post_body)
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
