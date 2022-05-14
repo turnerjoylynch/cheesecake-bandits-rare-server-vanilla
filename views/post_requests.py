@@ -5,16 +5,14 @@ from models import Post
 POSTS = [
     {
         "id": 1,
+        "title": "Filler",
         "userId": 2,
         "categoryId": 2,
-        "title": "Filler",
         "publicationDate": "5/7/2022",
-        "image_url": "https://www.tailorbrands.com/wp-content/uploads/2020/07/mcdonalds-logo.jpg",
         "content": "filler",
-        "approved": False
     }
 ]
-#hardcoded database object
+# hardcoded database object
 
 
 def get_all_posts():
@@ -29,13 +27,11 @@ def get_all_posts():
         db_cursor.execute("""
         SELECT
             a.id,
+            a.title,
             a.user_id,
             a.category_id,
-            a.title,
             a.publication_date,
-            a.image_url,
-            a.content,
-            a.approved
+            a.content
         FROM Posts a
         """)
 
@@ -52,9 +48,9 @@ def get_all_posts():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # post class above.
-            post = Post(row['id'], row['user_id'], row['category_id'],
-                        row['title'], row['publication_date'], row['image_url'],
-                        row['content'], row['approved'])
+            post = Post(row['id'], row['title'], row['user_id'], row['category_id'],
+                        row['publication_date'],
+                        row['content'])
 
             posts.append(post.__dict__)
 
@@ -71,14 +67,12 @@ def get_single_post(id):
         # into the SQL statement.
         db_cursor.execute("""
         SELECT
-           a.id,
+            a.id,
+            a.title,
             a.user_id,
             a.category_id,
-            a.title,
             a.publication_date,
-            a.image_url,
-            a.content,
-            a.appproved
+            a.content
         FROM post a
         WHERE a.id = ?
         """, (id, ))
@@ -87,9 +81,9 @@ def get_single_post(id):
         data = db_cursor.fetchone()
 
         # Create an post instance from the current row
-        post = Post(data['id'], data['user_id'], data['category_id'],
-                    data['title'], data['publication_date'], data['image_url'],
-                    data['content'], data['approved'])
+        post = Post(data['id'], data['title'], data['user_id'],
+                    data['category_id'],
+                    data['publication_date'], data['content'])
 
         return json.dumps(post.__dict__)
 
@@ -100,17 +94,16 @@ def create_post(new_post):
 
         db_cursor.execute("""
             INSERT INTO Posts
-                (user_id,category_id,title,publication_date,image_url,content,approved)
+                (title,user_id,category_id,publication_date,content)
             VALUES
-                (?, ?, ?, ?, ?, ?, ?);
+                (?, ?, ?, ?, ?);
             """, (
+            new_post['title'],
             new_post['user_id'],
             new_post['category_id'],
-            new_post['title'],
-            new_post['publication_date'], #currently does not display anything on database may need to be filled in directly via form. 
-            new_post['image_url'],
-            new_post['content'],
-            new_post['approved'],))
+            # currently does not display anything on database may need to be filled in directly via form.
+            new_post['publication_date'],
+            new_post['content'],))
 
         id = db_cursor.lastrowid
 
