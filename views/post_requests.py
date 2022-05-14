@@ -14,6 +14,7 @@ POSTS = [
         "approved": False
     }
 ]
+#hardcoded database object
 
 
 def get_all_posts():
