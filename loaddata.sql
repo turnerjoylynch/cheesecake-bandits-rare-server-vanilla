@@ -85,6 +85,9 @@ CREATE TABLE "Categories" (
   "label" varchar
 );
 
-INSERT INTO Categories ('label') VALUES ('News');
+INSERT INTO `Categories` VALUES (null, "News");
+INSERT INTO `Categories` VALUES (null, "Entertainment");
+INSERT INTO `Categories` VALUES (null, "Drama");
+
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
