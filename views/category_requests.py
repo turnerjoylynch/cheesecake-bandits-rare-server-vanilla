@@ -73,18 +73,46 @@ def get_all_categories():
 
 
 def get_single_category(id):
+
+    with sqlite3.connect("./db.sqlite3") as conn:
+
+        # Just use these. It's a Black Box.
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # Write the SQL query to get the information you want
+        db_cursor.execute("""
+        SELECT
+            c.id,
+            c.label
+        FROM Categories c
+        WHERE c.id = ?
+        """, (id, ))
+
+        # Convert rows of data into a Python list
+        data = db_cursor.fetchone()
+
+        # Iterate list of data returned from database
+
+        # Create an post instance from the current row.
+        # Note that the database fields are specified in
+        # exact order of the parameters defined in the
+        # Post class above.
+        category = Category(data['id'], data['label'])
+
+        return json.dumps(category.__dict__)
     # Variable to hold the found animal, if it exists
-    requested_category = None
+    # requested_category = None
 
-    # Iterate the ANIMALS list above. Very similar to the
-    # for..of loops you used in JavaScript.
-    for category in CATEGORIES:
-        # Dictionaries in Python use [] notation to find a key
-        # instead of the dot notation that JavaScript used.
-        if category["id"] == id:
-            requested_category = category
+    # # Iterate the ANIMALS list above. Very similar to the
+    # # for..of loops you used in JavaScript.
+    # for category in CATEGORIES:
+    #     # Dictionaries in Python use [] notation to find a key
+    #     # instead of the dot notation that JavaScript used.
+    #     if category["id"] == id:
+    #         requested_category = category
 
-    return requested_category
+    # return requested_category
 
 
 def delete_category(id):
