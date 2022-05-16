@@ -91,3 +91,6 @@ INSERT INTO `Categories` VALUES (null, "Drama");
 
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+
+
+SELECT * FROM Categories ORDER BY id DESC;

@@ -10,21 +10,23 @@ CATEGORIES = []
 def create_category(new_category):
     # Get the id value of the last animal in the list
     with sqlite3.connect("./db.sqlite3") as conn:
-
-        # Just use these. It's a Black Box.
-        conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         INSERT INTO Categories
-        (label)
+            ( label, )
         VALUES
-        (?);
-        """, (new_category['label'],),
-        )
+            ( ?,);
+        """, (new_category['label'], ))
 
+        # The `lastrowid` property on the cursor will return
+        # the primary key of the last thing that got added to
+        # the database.
         id = db_cursor.lastrowid
 
+        # Add the `id` property to the animal dictionary that
+        # was sent by the client so that the client sees the
+        # primary key in the response.
         new_category['id'] = id
 
     return json.dumps(new_category)
