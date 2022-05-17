@@ -85,10 +85,15 @@ CREATE TABLE "Categories" (
   "label" varchar
 );
 
-INSERT INTO Categories ('label') VALUES ('News');
+INSERT INTO `Categories` VALUES (null, "News");
+INSERT INTO `Categories` VALUES (null, "Entertainment");
+INSERT INTO `Categories` VALUES (null, "Drama");
+
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
+
+SELECT * FROM Categories ORDER BY id DESC;
 SELECT * FROM Users;
 
 INSERT INTO Posts (id, user_id, category_id, title, publication_date, image_url, content, approved) values (1, 1, 'HVAC', 'Plague Dogs, The', '9/8/2021', 'http://dummyimage.com/115x100.png/5fa2dd/ffffff', 'In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo. Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis. Sed ante.', true);
@@ -96,3 +101,4 @@ INSERT INTO Posts (id, user_id, category_id, title, publication_date, image_url,
 INSERT INTO Posts (id, user_id, category_id, title, publication_date, image_url, content, approved) values (3, 3, 'Exterior Signage', 'Friday the 13th', '4/5/2022', 'http://dummyimage.com/182x100.png/5fa2dd/ffffff', 'Pellentesque ultrices mattis odio. Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.', true);
 INSERT INTO Posts (id, user_id, category_id, title, publication_date, image_url, content, approved) values (4, 4, 'Granite Surfaces', 'Eye See You (D-Tox)', '3/28/2022', 'http://dummyimage.com/107x100.png/cc0000/ffffff', 'Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh. In quis justo. Maecenas rhoncus aliquam lacus. Morbi quis tortor id nulla ultrices aliquet.', false);
 INSERT INTO Posts (id, user_id, category_id, title, publication_date, image_url, content, approved) values (5, 5, 'Curb & Gutter', 'Forgetting the Girl', '1/15/2022', 'http://dummyimage.com/212x100.png/dddddd/000000', 'Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh. In quis justo. Maecenas rhoncus aliquam lacus. Morbi quis tortor id nulla ultrices aliquet. Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo. Pellentesque viverra pede ac diam.', true);
+

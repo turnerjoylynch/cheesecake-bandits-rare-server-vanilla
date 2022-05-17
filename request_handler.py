@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import get_all_posts, get_single_post, create_post, delete_post, update_post
 from views.user import create_user, login_user
+from views.category_requests import create_category, get_all_categories, get_single_category, delete_category
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -59,6 +60,17 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Response from parse_url() is a tuple with 2
         # items in it, which means the request was for
+
+        # `/animals` or `/animals/2`
+        if len(parsed) == 2:
+            (resource, id) = parsed
+
+            if resource == "categories":
+                if id is not None:
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
+
         # `/posts` or `/posts/2`
         if len(parsed) == 2:
             (resource, id) = parsed  # pylint: disable=unbalanced-tuple-unpacking
@@ -75,6 +87,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif len(parsed) == 3:
             (resource, key, value) = parsed
 
+
         self.wfile.write(response.encode())
 
     def do_POST(self):
@@ -89,10 +102,12 @@ class HandleRequests(BaseHTTPRequestHandler):
         print(post_body)
         print("***" * 50)
         response = ''
+
         resource, _ = self.parse_url() # pylint: disable=unbalanced-tuple-unpacking
         print("***" * 50)
         print(resource)
         print("***" * 50)
+
         if resource == 'login':
             response = login_user(post_body)
         if resource == 'register':
@@ -100,7 +115,15 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'posts':
             response = create_post(post_body)
 
-        self.wfile.write(response.encode())
+        new_category = None
+
+        # Add a new animal to the list. Don't worry about
+        # the orange squiggle, you'll define the create_animal
+        # function next.
+        if resource == "categories":
+            new_category = create_category(post_body)
+
+        self.wfile.write(f"{new_category}".encode())
 
 
     def do_PUT(self):
@@ -120,6 +143,17 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write("".encode())
 
     def do_DELETE(self):
+
+        """Handle DELETE Requests"""
+        self._set_headers(204)
+
+    # Parse the URL
+        (resource, id) = self.parse_url()
+
+    # Delete a single animal from the list
+        if resource == "categories":
+            delete_category(id)
+
         # Set a 204 response code
         self._set_headers(204)
 
